@@ -1,0 +1,31 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+  <meta charset="utf-8" />
+  <title>ishop</title>
+</head> 
+<body> 
+  <div id="container"></div> 
+      
+  <script src="https://unpkg.com/react@15/dist/react.js"></script> 
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script> 
+      
+  <script src="Ishop.js"></script>
+  <link rel="stylesheet" type="text/css" href="Ishop.css" />
+  <script>
+
+    var itemArray=[ 
+      {itemCode:6,itemName:'Old mobile',URLphoto:'ishop/images/iphoneX.jpg',captionText:'Iphone X',price:1,count:222}, 
+      {itemCode:66,itemName:'Mobile for reach',URLphoto:'ishop/images/Nokia7610.jpg',captionText:'Nokia7610',price:2,count:123}, 
+      {itemCode:666,itemName:'Kawasaki motorcycle',URLphoto:'ishop/images/kawasakiVulcan.jpg',captionText:'Kawasaki Vulcan 900',price:3,count:444} 
+    ];
+
+    ReactDOM.render(
+      React.createElement(ItemComponent,{items:itemArray}), 
+      document.getElementById('container') 
+    );
+
+  </script>
+
+</body> 
+</html>
