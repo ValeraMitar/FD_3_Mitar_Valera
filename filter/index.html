@@ -14,14 +14,20 @@
   <link rel="stylesheet" type="text/css" href="filter.css" />
   <script>
 
-    var textArray=[ 
-      {stringCode:1,text:'Some peple go to home'}, 
-      {stringCode:2,text:'Everything still work in their workplaces'}, 
-      {stringCode:3,text:'But all this people need money'} 
-    ];
+    // var textArray=[ 
+    //   {stringCode:1,text:'Some peple go to home'}, 
+    //   {stringCode:2,text:'Everything still work in their workplaces'}, 
+    //   {stringCode:3,text:'But all this people need money'} 
+    // ],
+    var textCustomArray=[ 
+      'Some peple go to home', 
+      'Everything still work in their workplaces', 
+      'But all this people need money' 
+    ],
+        filterName = 'Filter';
 
     ReactDOM.render(
-      React.createElement(FilterComponent,{textList:textArray}), 
+      React.createElement(FilterComponent,{textList:textCustomArray,filterLabel:filterName}), 
       document.getElementById('container') 
     );
 
