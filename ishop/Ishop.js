@@ -20,7 +20,8 @@ var ItemComponent = React.createClass({
       var itemsRow = this.props.items.map( el =>
           React.DOM.div({key:el.itemCode,className:'itemsRow'},
             React.DOM.span({className:'itemName'},el.itemName),
-            React.DOM.img({src:el.URLphoto, alt:el.captionText,className:'itemImage'}),
+            React.DOM.div({className:'imgContainer'},
+              React.DOM.img({src:el.URLphoto, alt:el.captionText,className:'itemImage'})),
             React.DOM.span({className:'itemPrice'},el.price),
             React.DOM.span({className:'itemCount'},el.count),
         ));
