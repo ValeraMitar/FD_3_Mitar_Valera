@@ -1,0 +1,43 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #d4d4d4;
+    margin: 0;
+    padding: 0;
+}
+#container, .filter {
+    width: 100%;
+    height: 100%;
+}
+.filter {
+    width: 30%;
+    height: 50%;
+    margin: 0 auto;
+    margin-top: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    overflow: auto;
+    border: 1px solid black;
+}
+
+.filter .headerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 400px;
+    margin: 90px 0 0 0;
+}
+.filter .listContainer {
+    width: 400px;
+    margin: 20px 0 20px 0;
+    padding: 0 0 0 120px;
+}
+.filter .itemsRow {
+    margin: 5px 0 5px 0;
+}

@@ -7,7 +7,7 @@ var FilterComponent = React.createClass({
       isChecked: false,
       textArray: this.props.textList,
       sourceArray: this.props.textList,
-      sourceArrayAlphabetical: this.sort(this.props.textList),
+      sourceArrayAlphabetical: this.sort(this.props.textList, this),
       isSearchMarkerPresent: false,
     };
   },
@@ -21,7 +21,7 @@ var FilterComponent = React.createClass({
     var sortArray = this.state.textArray;
 
     if (inputCheckBoxState) {
-      sortArray = sortArray.concat([]).sort();
+      sortArray = sortArray.slice().sort(this.callbackSort);
     } else {
       sortArray = this.arrayAfterSearch(this);
     }
@@ -33,7 +33,6 @@ var FilterComponent = React.createClass({
   },
 
   handleChange: function (event) {
-    console.log(event.target.value);
     var sortByUser = [];
     var sourceSortArray;
     if (event.target.value === '') {
@@ -41,7 +40,7 @@ var FilterComponent = React.createClass({
     } else {
       sourceSortArray = this.setKindOfArray();
       sourceSortArray.map(function (el) {
-        var searchMarker = el.search(event.target.value);
+        var searchMarker = el._text.search(event.target.value);
         if (searchMarker > 0) {
           sortByUser.push(el);
         }
@@ -51,11 +50,12 @@ var FilterComponent = React.createClass({
       textArray: sortByUser,
       textArrayAfterStringSort: sortByUser,
       isSearchMarkerPresent: event.target.value ? !!event.target.value : !!event.target.value,
+      searchMarker: event.target.value ? event.target.value : !!event.target.value
     });
   },
 
-  sort(arr) {
-    return arr.concat().sort();
+  sort(arr, _this) {
+    return arr.slice().sort(_this.callbackSort);
   },
 
   setKindOfArray() {
@@ -68,39 +68,60 @@ var FilterComponent = React.createClass({
 
   arrayAfterSearch(_this) {
     if (this.state.isSearchMarkerPresent) {
-      return _this.state.textArrayAfterStringSort;
+      var filtredArr = this.state.sourceArray;
+      var data = [];
+      filtredArr.map(function (el) {
+        var searchMarker = el._text.search(_this.state.searchMarker);
+        if (searchMarker > 0) {
+          data.push(el);
+        }
+      });
+      return data;
     } else {
       return _this.props.textList;
+    }
+  },
+
+  callbackSort(a, b) {
+    var nameA = a._text.toUpperCase();
+    var nameB = b._text.toUpperCase();
+    if (nameA < nameB) {
+      return -1;
+    } else if (nameA > nameB) {
+      return 1;
+    } else {
+      return 0;
     }
   },
 
   render: function () {
     var filteredArray = this.state.textArray;
     var textListRow = filteredArray.map(el =>
-      React.DOM.div({ className: 'itemsRow' },
-        React.DOM.span({ className: 'listRow' }, el),
+      React.DOM.div({ key: el.id, className: 'itemsRow' },
+        React.DOM.span({ className: 'listRow' }, el._text),
       ));
 
     return React.DOM.div({ className: 'filter' },
-      React.DOM.div({ className: 'checkBoxContainer' },
-        React.DOM.input({
-          type: 'checkbox',
-          name: 'filter',
-          value: this.props.filterLabel,
-          onClick: this.onChecked,
-          defaultChecked: this.state.isChecked,
-        }),
-        React.DOM.span({ className: 'inputLabel' }, this.props.filterLabel)
-      ),
-      React.DOM.div({ className: 'inputSearchContainer' },
-        React.DOM.input({
-          type: 'text',
-          name: 'filter',
-          onChange: this.handleChange,
-          defaultChecked: 'Please enter filter marker',
-        }),
-      ),
-      React.DOM.div({ className: 'listContaoner' }, textListRow),
+      React.DOM.div({ className: 'headerContainer' },
+        React.DOM.div({ className: 'checkBoxContainer' },
+          React.DOM.input({
+            type: 'checkbox',
+            name: 'filter',
+            value: this.props.filterLabel,
+            onClick: this.onChecked,
+            defaultChecked: this.state.isChecked,
+          }),
+          React.DOM.span({ className: 'inputLabel' }, this.props.filterLabel)
+        ),
+        React.DOM.div({ className: 'inputSearchContainer' },
+          React.DOM.input({
+            type: 'text',
+            name: 'filter',
+            onChange: this.handleChange,
+            defaultChecked: 'Please enter filter marker',
+          }),
+        )),
+      React.DOM.div({ className: 'listContainer' }, textListRow),
     );
   },
 
