@@ -1,0 +1,63 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #d4d4d4;
+    margin: 0;
+    padding: 0;
+}
+#container, .shopItems {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+}
+.shopItems .itemsContainer {
+    min-width: 250px;
+    min-height: 250px;
+    max-width: 600px;
+    max-height: 600px;
+    background-color: #3addff;
+    border: aqua;
+    border-radius: 15px;
+}
+.shopItems .itemsContainer .itemsRow {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px 5px 5px 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 130px;
+}
+.shopItems .itemsContainer .itemsRow .itemName {
+    flex-basis: 100px;
+    margin: 0 0 0 10px;
+}
+.shopItems .itemsContainer .itemsRow .imgContainer {
+    width: 180px;
+}
+.shopItems .itemImage {
+    height: 120px;
+}
+.shopItems .itemsContainer .itemsRow .itemPrice {
+    margin: 0 5px 0 5px;
+    border-right:1px solid black;
+    border-left:1px solid black;
+    padding:  0 10px 0 10px;
+    height: 100%;
+    line-height: 130px;
+}
+.shopItems .itemsContainer .itemsRow .itemCount {
+    margin: 0 5px 0 0;
+}

@@ -1,0 +1,5 @@
+[ 
+    {"itemCode":6,"itemName":"Old mobile" ,"URLphoto":".//images/iphoneX.jpg","captionText":"Iphone X","price":1,"count":222}, 
+    {"itemCode":66,"itemName":"Mobile for reach","URLphoto":".//images/Nokia7610.jpg","captionText":"Nokia7610","price":2,"count":123}, 
+    {"itemCode":666,"itemName":"Kawasaki motorcycle","URLphoto":".//images/kawasakiVulcan.jpg","captionText":"Kawasaki Vulcan 900","price":3,"count":444}
+]
