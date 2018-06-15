@@ -12,14 +12,24 @@ class ItemsList extends Component {
         this.isActive = this.isActive.bind(this);
     }
 
-    isActive(id) {
+    componentDidMount() {
+      this.mounted = true;
+    }
+
+    componentWillUnmount() {
+      this.mounted = false;
+    }
+
+  isActive(id) {
         return this.state.selectedTab === id;
     }
 
     setActiveTab(selectedTabId) {
+      if(this.mounted) {
         this.setState({
-            selectedTab: selectedTabId,
-        })
+          selectedTab: selectedTabId,
+        });
+      }
     }
 
     render() {

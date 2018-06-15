@@ -20423,6 +20423,16 @@ var ItemsList = function (_Component) {
     }
 
     _createClass(ItemsList, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.mounted = true;
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            this.mounted = false;
+        }
+    }, {
         key: 'isActive',
         value: function isActive(id) {
             return this.state.selectedTab === id;
@@ -20430,9 +20440,11 @@ var ItemsList = function (_Component) {
     }, {
         key: 'setActiveTab',
         value: function setActiveTab(selectedTabId) {
-            this.setState({
-                selectedTab: selectedTabId
-            });
+            if (this.mounted) {
+                this.setState({
+                    selectedTab: selectedTabId
+                });
+            }
         }
     }, {
         key: 'render',
