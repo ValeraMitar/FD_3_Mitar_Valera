@@ -34,7 +34,7 @@ class ItemsList extends Component {
 
     render() {
 
-        var itemsRow = this.props.listOfItems.map(function (v) {
+        var itemsRow = this.props.listOfItems.map( (v) => {
           return <ItemElement key={v.itemCode}
                 name={v.itemName}
                 photoURL={v.URLphoto}
@@ -44,7 +44,7 @@ class ItemsList extends Component {
                 isActive={this.isActive(v.itemCode)}
                 onActiveTab={this.setActiveTab(v.itemCode)}
             />
-        },this)
+        })
 
         return (
             <div className='shopItems'>

@@ -20449,6 +20449,7 @@ var ItemsList = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
 
             var itemsRow = this.props.listOfItems.map(function (v) {
                 return _react2.default.createElement(_ItemElement2.default, { key: v.itemCode,
@@ -20457,10 +20458,10 @@ var ItemsList = function (_Component) {
                     caption: v.captionText,
                     price: v.price,
                     count: v.count,
-                    isActive: this.isActive(v.itemCode),
-                    onActiveTab: this.setActiveTab(v.itemCode)
+                    isActive: _this2.isActive(v.itemCode),
+                    onActiveTab: _this2.setActiveTab(v.itemCode)
                 });
-            }, this);
+            });
 
             return _react2.default.createElement(
                 'div',
