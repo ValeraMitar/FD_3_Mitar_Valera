@@ -6,10 +6,8 @@ import ItemElement from '../components/ItemElement';
 class ItemsList extends Component {
 
     constructor(props) {
-        super();
+        super(props);
         this.state = {};
-        this.setActiveTab = this.setActiveTab.bind(this);
-        this.isActive = this.isActive.bind(this);
     }
 
     componentDidMount() {
@@ -20,11 +18,11 @@ class ItemsList extends Component {
       this.mounted = false;
     }
 
-  isActive(id) {
+    isActive = (id) => {
         return this.state.selectedTab === id;
     }
 
-    setActiveTab(selectedTabId) {
+    setActiveTab = (selectedTabId) =>  {
       if(this.mounted) {
         this.setState({
           selectedTab: selectedTabId,
@@ -36,13 +34,14 @@ class ItemsList extends Component {
 
         var itemsRow = this.props.listOfItems.map( (v) => {
           return <ItemElement key={v.itemCode}
+                id={v.itemCode}
                 name={v.itemName}
                 photoURL={v.URLphoto}
                 caption={v.captionText}
                 price={v.price}
                 count={v.count}
                 isActive={this.isActive(v.itemCode)}
-                onActiveTab={this.setActiveTab(v.itemCode)}
+                onActiveTab={this.setActiveTab}
             />
         })
 

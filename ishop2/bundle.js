@@ -20414,11 +20414,21 @@ var ItemsList = function (_Component) {
     function ItemsList(props) {
         _classCallCheck(this, ItemsList);
 
-        var _this = _possibleConstructorReturn(this, (ItemsList.__proto__ || Object.getPrototypeOf(ItemsList)).call(this));
+        var _this = _possibleConstructorReturn(this, (ItemsList.__proto__ || Object.getPrototypeOf(ItemsList)).call(this, props));
+
+        _this.isActive = function (id) {
+            return _this.state.selectedTab === id;
+        };
+
+        _this.setActiveTab = function (selectedTabId) {
+            if (_this.mounted) {
+                _this.setState({
+                    selectedTab: selectedTabId
+                });
+            }
+        };
 
         _this.state = {};
-        _this.setActiveTab = _this.setActiveTab.bind(_this);
-        _this.isActive = _this.isActive.bind(_this);
         return _this;
     }
 
@@ -20433,33 +20443,20 @@ var ItemsList = function (_Component) {
             this.mounted = false;
         }
     }, {
-        key: 'isActive',
-        value: function isActive(id) {
-            return this.state.selectedTab === id;
-        }
-    }, {
-        key: 'setActiveTab',
-        value: function setActiveTab(selectedTabId) {
-            if (this.mounted) {
-                this.setState({
-                    selectedTab: selectedTabId
-                });
-            }
-        }
-    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
             var itemsRow = this.props.listOfItems.map(function (v) {
                 return _react2.default.createElement(_ItemElement2.default, { key: v.itemCode,
+                    id: v.itemCode,
                     name: v.itemName,
                     photoURL: v.URLphoto,
                     caption: v.captionText,
                     price: v.price,
                     count: v.count,
                     isActive: _this2.isActive(v.itemCode),
-                    onActiveTab: _this2.setActiveTab(v.itemCode)
+                    onActiveTab: _this2.setActiveTab
                 });
             });
 
@@ -21132,7 +21129,12 @@ var ItemElement = function (_Component) {
   function ItemElement(props) {
     _classCallCheck(this, ItemElement);
 
-    var _this = _possibleConstructorReturn(this, (ItemElement.__proto__ || Object.getPrototypeOf(ItemElement)).call(this));
+    var _this = _possibleConstructorReturn(this, (ItemElement.__proto__ || Object.getPrototypeOf(ItemElement)).call(this, props));
+
+    _this.onClickHandler = function (e) {
+      e.preventDefault();
+      _this.props.onActiveTab(_this.props.id);
+    };
 
     _this.state = {};
     return _this;
@@ -21145,7 +21147,7 @@ var ItemElement = function (_Component) {
       var className = 'itemsRow ' + active;
       return _react2.default.createElement(
         'div',
-        { className: className, onClick: this.props.onActiveTab },
+        { className: className, onClick: this.onClickHandler },
         _react2.default.createElement(
           'span',
           { className: 'itemName' },

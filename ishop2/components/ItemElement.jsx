@@ -6,15 +6,20 @@ import PropTypes from 'prop-types';
 class ItemElement extends Component {
 
   constructor(props) {
-    super()
+    super(props)
     this.state = {};
+  }
+
+  onClickHandler = (e) => {
+    e.preventDefault();
+    this.props.onActiveTab(this.props.id);
   }
 
   render() {
     var active = this.props.isActive ? 'active' : '';
     var className = `itemsRow ${active}`;
     return (
-      <div className={className} onClick={this.props.onActiveTab}>
+      <div className={className} onClick={this.onClickHandler}>
         <span className='itemName'>{this.props.name}</span>
         <div className='imgContainer'>
           <img className='itemImage' src={this.props.photoURL} alt={this.props.caption} title={this.props.caption} />

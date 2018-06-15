@@ -7,7 +7,7 @@ const extractCSS = new ExtractTextPlugin({
 });
 
 module.exports = {
-  entry: "./ishop.js",// current file of application
+  entry: "./index.js",// current file of application
   output: {
     path: __dirname,// way to catalog output files
     filename: "bundle.js"  // the name of creation file
