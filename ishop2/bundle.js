@@ -20416,10 +20416,6 @@ var ItemsList = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (ItemsList.__proto__ || Object.getPrototypeOf(ItemsList)).call(this, props));
 
-        _this.isActive = function (id) {
-            return _this.state.selectedTab === id;
-        };
-
         _this.setActiveTab = function (selectedTabId) {
             if (_this.mounted) {
                 _this.setState({
@@ -20455,7 +20451,7 @@ var ItemsList = function (_Component) {
                     caption: v.captionText,
                     price: v.price,
                     count: v.count,
-                    isActive: _this2.isActive(v.itemCode),
+                    isActive: _this2.state.selectedTab ? _this2.state.selectedTab === v.itemCode : false,
                     onActiveTab: _this2.setActiveTab
                 });
             });

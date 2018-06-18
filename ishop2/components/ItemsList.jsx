@@ -18,10 +18,6 @@ class ItemsList extends Component {
       this.mounted = false;
     }
 
-    isActive = (id) => {
-        return this.state.selectedTab === id;
-    }
-
     setActiveTab = (selectedTabId) =>  {
       if(this.mounted) {
         this.setState({
@@ -40,7 +36,7 @@ class ItemsList extends Component {
                 caption={v.captionText}
                 price={v.price}
                 count={v.count}
-                isActive={this.isActive(v.itemCode)}
+                isActive={this.state.selectedTab ? this.state.selectedTab === v.itemCode : false}
                 onActiveTab={this.setActiveTab}
             />
         })
