@@ -9,7 +9,8 @@ class ItemsList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          isViewCard: false, 
+          isViewCard: false,
+          listOfItems: this.props.listOfItems,
         };
     }
 
@@ -23,7 +24,7 @@ class ItemsList extends Component {
 
     setActiveTab = (selectedTabId) =>  {
       if(this.mounted) {
-        var cardItem = this.props.listOfItems.find((element) => {
+        var cardItem = this.state.listOfItems.find((element) => {
           return element.itemCode === selectedTabId;
         });
         this.setState({
@@ -32,11 +33,29 @@ class ItemsList extends Component {
           isViewCard:true,
         });
       }
-    }
+    };
+
+    deleteElement = (selectedTabId) => {
+      if (this.state.listOfItems.length === 1) {
+          return;
+      }
+      var indexElement = this.state.listOfItems.find((element,i) => {
+          if(element.itemCode === selectedTabId) {
+            return i;
+          }
+      });
+      this.state.listOfItems.splice(indexElement,1);
+      var checkIsLastElement = this.state.listOfItems.length === 1 ? true : false;
+      this.setState({
+          listOfItems:this.state.listOfItems,
+          isViewCard:false,
+          isLastElement:checkIsLastElement,
+      });
+    };
 
     render() {
 
-        var itemsRow = this.props.listOfItems.map( (v) => {
+        var itemsRow = this.state.listOfItems.map( (v) => {
           var isElementActive = this.state.selectedTab ? this.state.selectedTab === v.itemCode : false;
           return <ItemElement key={v.itemCode}
                 id={v.itemCode}
@@ -47,6 +66,8 @@ class ItemsList extends Component {
                 count={v.count}
                 isActive={isElementActive}
                 onActiveTab={this.setActiveTab}
+                deleteElement={this.deleteElement}
+                isLastElement={this.state.isLastElement}
             />
         })
 

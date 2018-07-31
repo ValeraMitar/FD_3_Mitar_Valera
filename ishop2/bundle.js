@@ -20422,7 +20422,7 @@ var ItemsList = function (_Component) {
 
         _this.setActiveTab = function (selectedTabId) {
             if (_this.mounted) {
-                var cardItem = _this.props.listOfItems.find(function (element) {
+                var cardItem = _this.state.listOfItems.find(function (element) {
                     return element.itemCode === selectedTabId;
                 });
                 _this.setState({
@@ -20433,8 +20433,27 @@ var ItemsList = function (_Component) {
             }
         };
 
+        _this.deleteElement = function (selectedTabId) {
+            if (_this.state.listOfItems.length === 1) {
+                return;
+            }
+            var indexElement = _this.state.listOfItems.find(function (element, i) {
+                if (element.itemCode === selectedTabId) {
+                    return i;
+                }
+            });
+            _this.state.listOfItems.splice(indexElement, 1);
+            var checkIsLastElement = _this.state.listOfItems.length === 1 ? true : false;
+            _this.setState({
+                listOfItems: _this.state.listOfItems,
+                isViewCard: false,
+                isLastElement: checkIsLastElement
+            });
+        };
+
         _this.state = {
-            isViewCard: false
+            isViewCard: false,
+            listOfItems: _this.props.listOfItems
         };
         return _this;
     }
@@ -20454,7 +20473,7 @@ var ItemsList = function (_Component) {
         value: function render() {
             var _this2 = this;
 
-            var itemsRow = this.props.listOfItems.map(function (v) {
+            var itemsRow = this.state.listOfItems.map(function (v) {
                 var isElementActive = _this2.state.selectedTab ? _this2.state.selectedTab === v.itemCode : false;
                 return _react2.default.createElement(_ItemElement2.default, { key: v.itemCode,
                     id: v.itemCode,
@@ -20464,7 +20483,9 @@ var ItemsList = function (_Component) {
                     price: v.price,
                     count: v.count,
                     isActive: isElementActive,
-                    onActiveTab: _this2.setActiveTab
+                    onActiveTab: _this2.setActiveTab,
+                    deleteElement: _this2.deleteElement,
+                    isLastElement: _this2.state.isLastElement
                 });
             });
 
@@ -21145,6 +21166,14 @@ var ItemElement = function (_Component) {
       _this.props.onActiveTab(_this.props.id);
     };
 
+    _this.editMode = function () {
+      console.log('now edit mode');
+    };
+
+    _this.deleteItem = function () {
+      _this.props.deleteElement(_this.props.id);
+    };
+
     _this.state = {};
     return _this;
   }
@@ -21156,27 +21185,45 @@ var ItemElement = function (_Component) {
       var className = 'itemsRow ' + active;
       return _react2.default.createElement(
         'div',
-        { className: className, onClick: this.onClickHandler },
-        _react2.default.createElement(
-          'span',
-          { className: 'itemName' },
-          this.props.name
-        ),
+        { className: className },
         _react2.default.createElement(
           'div',
-          { className: 'imgContainer' },
-          _react2.default.createElement('img', { className: 'itemImage', src: this.props.photoURL, alt: this.props.caption, title: this.props.caption })
+          { className: 'element-container', onClick: this.onClickHandler },
+          _react2.default.createElement(
+            'span',
+            { className: 'itemName' },
+            this.props.name
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'imgContainer' },
+            _react2.default.createElement('img', { className: 'itemImage', src: this.props.photoURL, alt: this.props.caption, title: this.props.caption })
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'itemPrice' },
+            this.props.price
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'itemCount' },
+            this.props.count
+          )
         ),
-        _react2.default.createElement(
-          'span',
-          { className: 'itemPrice' },
-          this.props.price
-        ),
-        _react2.default.createElement(
-          'span',
-          { className: 'itemCount' },
-          this.props.count
-        )
+        this.props.isActive ? _react2.default.createElement(
+          'div',
+          { className: 'buttons-container' },
+          _react2.default.createElement(
+            'button',
+            { className: 'button edit-button', onClick: this.editMode },
+            'Edit'
+          ),
+          !this.props.isLastElement ? _react2.default.createElement(
+            'button',
+            { className: 'button delete-button', onClick: this.deleteItem },
+            'Delete'
+          ) : null
+        ) : null
       );
     }
   }]);
