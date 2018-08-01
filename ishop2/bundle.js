@@ -20428,9 +20428,16 @@ var ItemsList = function (_Component) {
                 _this.setState({
                     selectedTab: selectedTabId,
                     selectedItemCard: cardItem,
-                    isViewCard: true
+                    isViewCard: true,
+                    isEditMode: false
                 });
             }
+        };
+
+        _this.editMode = function () {
+            _this.setState({
+                isEditMode: true
+            });
         };
 
         _this.deleteElement = function (selectedTabId) {
@@ -20453,7 +20460,8 @@ var ItemsList = function (_Component) {
 
         _this.state = {
             isViewCard: false,
-            listOfItems: _this.props.listOfItems
+            listOfItems: _this.props.listOfItems,
+            isEditMode: false
         };
         return _this;
     }
@@ -20485,7 +20493,8 @@ var ItemsList = function (_Component) {
                     isActive: isElementActive,
                     onActiveTab: _this2.setActiveTab,
                     deleteElement: _this2.deleteElement,
-                    isLastElement: _this2.state.isLastElement
+                    isLastElement: _this2.state.isLastElement,
+                    isEditMode: _this2.editMode
                 });
             });
 
@@ -20497,7 +20506,7 @@ var ItemsList = function (_Component) {
                     { className: 'itemsContainer' },
                     itemsRow
                 ),
-                this.state.isViewCard ? _react2.default.createElement(_CardItemElement2.default, { currentItem: this.state.selectedItemCard }) : null
+                this.state.isViewCard ? _react2.default.createElement(_CardItemElement2.default, { isDisabled: !this.state.isEditMode, currentItem: this.state.selectedItemCard }) : null
             );
         }
     }]);
@@ -21167,6 +21176,7 @@ var ItemElement = function (_Component) {
     };
 
     _this.editMode = function () {
+      _this.props.isEditMode();
       console.log('now edit mode');
     };
 
@@ -21272,13 +21282,43 @@ var CardItemElement = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (CardItemElement.__proto__ || Object.getPrototypeOf(CardItemElement)).call(this, props));
 
-    _this.state = {};
+    _this.state = {
+      itemName: _this.props.currentItem.itemName,
+      price: _this.props.currentItem.price,
+      count: _this.props.currentItem.count,
+      isEditMode: _this.props.isDisabled
+    };
     return _this;
   }
 
   _createClass(CardItemElement, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.mounted = true;
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.mounted = false;
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(oldProps, oldState) {}
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(newProps) {
+      console.log(newProps, this.props.currentItem);
+      this.setState({
+        itemName: newProps.currentItem.itemName,
+        price: newProps.currentItem.price,
+        count: newProps.currentItem.count,
+        isEditMode: newProps.isDisabled
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
+      console.log('re-render');
       return _react2.default.createElement(
         'div',
         { className: 'cardItem' },
@@ -21286,25 +21326,25 @@ var CardItemElement = function (_Component) {
           name: 'itemNameCard',
           className: 'itemNameCard'
           // defaultValue={this.props.currentItem.itemName}
-          , value: this.props.currentItem.itemName
+          , value: this.state.itemName
           // onChange={}
-          , disabled: true
+          , disabled: this.state.isEditMode
         }),
         _react2.default.createElement('input', { type: 'text',
           name: 'itemPriceCard',
           className: 'itemPriceCard'
           // defaultValue={this.props.currentItem.price}
-          , value: this.props.currentItem.price
+          , value: this.state.price
           // onChange={}
-          , disabled: true
+          , disabled: this.state.isEditMode
         }),
         _react2.default.createElement('input', { type: 'text',
           name: 'itemCountCard',
           className: 'itemCountCard'
           // defaultValue={this.props.currentItem.count}
-          , value: this.props.currentItem.price
+          , value: this.state.count
           // onChange={}
-          , disabled: true
+          , disabled: this.state.isEditMode
         })
       );
     }

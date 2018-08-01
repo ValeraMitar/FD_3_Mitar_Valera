@@ -11,6 +11,7 @@ class ItemsList extends Component {
         this.state = {
           isViewCard: false,
           listOfItems: this.props.listOfItems,
+          isEditMode: false,
         };
     }
 
@@ -31,8 +32,15 @@ class ItemsList extends Component {
           selectedTab: selectedTabId,
           selectedItemCard: cardItem,
           isViewCard:true,
+          isEditMode: false,
         });
       }
+    };
+
+    editMode = () => {
+       this.setState({
+           isEditMode:true,
+       });
     };
 
     deleteElement = (selectedTabId) => {
@@ -68,13 +76,14 @@ class ItemsList extends Component {
                 onActiveTab={this.setActiveTab}
                 deleteElement={this.deleteElement}
                 isLastElement={this.state.isLastElement}
+                isEditMode={this.editMode}
             />
-        })
+        });
 
         return (
             <div className='shopItems'>
                 <div className='itemsContainer'>{itemsRow}</div>
-                {this.state.isViewCard ? <CardItemElement currentItem={this.state.selectedItemCard}/> : null}
+                {this.state.isViewCard ? <CardItemElement isDisabled={!this.state.isEditMode} currentItem={this.state.selectedItemCard}/> : null}
             </div>
         )
     }
