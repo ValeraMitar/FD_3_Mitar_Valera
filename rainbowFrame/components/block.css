@@ -1,0 +1,15 @@
+﻿.block {
+  border: double gray 3px;
+  width: 270px;
+  height: 270px;
+  padding: 5px;
+  background-color: #F0F0F0;
+}
+
+#container .border-block {
+  height: 250px;
+  width: 250px;
+}
+.container {
+  height: 100%;
+}

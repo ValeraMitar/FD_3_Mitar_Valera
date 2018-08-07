@@ -20381,7 +20381,7 @@ module.exports = camelize;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -20413,105 +20413,149 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 // import '../css/Ishop.css';
 
 var ItemsList = function (_Component) {
-    _inherits(ItemsList, _Component);
+  _inherits(ItemsList, _Component);
 
-    function ItemsList(props) {
-        _classCallCheck(this, ItemsList);
+  function ItemsList(props) {
+    _classCallCheck(this, ItemsList);
 
-        var _this = _possibleConstructorReturn(this, (ItemsList.__proto__ || Object.getPrototypeOf(ItemsList)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (ItemsList.__proto__ || Object.getPrototypeOf(ItemsList)).call(this, props));
 
-        _this.setActiveTab = function (selectedTabId) {
-            if (_this.mounted) {
-                var cardItem = _this.state.listOfItems.find(function (element) {
-                    return element.itemCode === selectedTabId;
-                });
-                _this.setState({
-                    selectedTab: selectedTabId,
-                    selectedItemCard: cardItem,
-                    isViewCard: true,
-                    isEditMode: false
-                });
-            }
-        };
+    _this.setActiveTab = function (selectedTabId) {
+      if (_this.mounted) {
+        var cardItem = _this.state.listOfItems.find(function (element) {
+          return element.itemCode === selectedTabId;
+        });
+        _this.setState({
+          selectedTab: selectedTabId,
+          selectedItemCard: cardItem,
+          isViewCard: true,
+          isEditMode: false
+        });
+      }
+    };
 
-        _this.editMode = function () {
-            _this.setState({
-                isEditMode: true
-            });
-        };
+    _this.editMode = function (editState) {
+      _this.setState({
+        isEditMode: editState
+      });
+    };
 
-        _this.deleteElement = function (selectedTabId) {
-            if (_this.state.listOfItems.length === 1) {
-                return;
-            }
-            var indexElement = _this.state.listOfItems.find(function (element, i) {
-                if (element.itemCode === selectedTabId) {
-                    return i;
-                }
-            });
-            _this.state.listOfItems.splice(indexElement, 1);
-            var checkIsLastElement = _this.state.listOfItems.length === 1 ? true : false;
-            _this.setState({
-                listOfItems: _this.state.listOfItems,
-                isViewCard: false,
-                isLastElement: checkIsLastElement
-            });
-        };
+    _this.saveChanges = function (itemElement) {
+      _this.state.listOfItems.find(function (element) {
+        if (element.itemCode === _this.state.selectedTab) {
+          element.itemName = itemElement.itemName;
+          element.price = itemElement.price;
+          element.count = itemElement.count;
+          return;
+        }
+      });
+      _this.setState({ listOfItems: _this.state.listOfItems });
+    };
 
-        _this.state = {
-            isViewCard: false,
-            listOfItems: _this.props.listOfItems,
-            isEditMode: false
-        };
-        return _this;
+    _this.deleteElement = function (selectedTabId) {
+      if (confirm("Do you really want to delete element?")) {
+        if (_this.state.listOfItems.length === 1) {
+          return;
+        }
+        var indexElement = _this.state.listOfItems.findIndex(function (element) {
+          if (element.itemCode === selectedTabId) {
+            return element;
+          }
+        });
+        _this.state.listOfItems.splice(indexElement, 1);
+        var checkIsLastElement = _this.state.listOfItems.length === 1 ? true : false;
+        _this.setState({
+          listOfItems: _this.state.listOfItems,
+          isViewCard: false,
+          isLastElement: checkIsLastElement
+        });
+      }
+    };
+
+    _this.addNewElement = function () {
+      _this.state.listOfItems.push({
+        "itemCode": _this.state.listOfItems[_this.state.listOfItems.length - 1].itemCode + 1,
+        "itemName": "Default",
+        "URLphoto": "",
+        "captionText": "default",
+        "price": 'Default',
+        "count": 'default'
+      });
+      _this.setState({ listOfItems: _this.state.listOfItems });
+    };
+
+    _this.state = {
+      isViewCard: false,
+      listOfItems: _this.props.listOfItems,
+      isEditMode: false
+    };
+    return _this;
+  }
+
+  _createClass(ItemsList, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.mounted = true;
     }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.mounted = false;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
 
-    _createClass(ItemsList, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this.mounted = true;
-        }
-    }, {
-        key: 'componentWillUnmount',
-        value: function componentWillUnmount() {
-            this.mounted = false;
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
+      var itemsRow = this.state.listOfItems.map(function (v) {
+        var isElementActive = _this2.state.selectedTab ? _this2.state.selectedTab === v.itemCode : false;
+        return _react2.default.createElement(_ItemElement2.default, { key: v.itemCode,
+          id: v.itemCode,
+          name: v.itemName,
+          photoURL: v.URLphoto,
+          caption: v.captionText,
+          price: v.price,
+          count: v.count,
+          isActive: isElementActive,
+          onActiveTab: _this2.setActiveTab,
+          deleteElement: _this2.deleteElement,
+          isLastElement: _this2.state.isLastElement,
+          isEditMode: _this2.editMode
+        });
+      });
 
-            var itemsRow = this.state.listOfItems.map(function (v) {
-                var isElementActive = _this2.state.selectedTab ? _this2.state.selectedTab === v.itemCode : false;
-                return _react2.default.createElement(_ItemElement2.default, { key: v.itemCode,
-                    id: v.itemCode,
-                    name: v.itemName,
-                    photoURL: v.URLphoto,
-                    caption: v.captionText,
-                    price: v.price,
-                    count: v.count,
-                    isActive: isElementActive,
-                    onActiveTab: _this2.setActiveTab,
-                    deleteElement: _this2.deleteElement,
-                    isLastElement: _this2.state.isLastElement,
-                    isEditMode: _this2.editMode
-                });
-            });
+      return _react2.default.createElement(
+        'div',
+        { className: 'elements-card' },
+        _react2.default.createElement(
+          'div',
+          { className: 'shopItems' },
+          _react2.default.createElement(
+            'div',
+            { className: 'itemsContainer' },
+            itemsRow
+          ),
+          this.state.isViewCard ? _react2.default.createElement(_CardItemElement2.default, {
+            saveChanges: this.saveChanges,
+            isEditMode: this.editMode,
+            isDisabled: !this.state.isEditMode,
+            currentItem: this.state.selectedItemCard
+          }) : null
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'buttons-container-new' },
+          _react2.default.createElement(
+            'button',
+            { className: 'button new-button', onClick: this.addNewElement },
+            'Add new Element'
+          )
+        )
+      );
+    }
+  }]);
 
-            return _react2.default.createElement(
-                'div',
-                { className: 'shopItems' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'itemsContainer' },
-                    itemsRow
-                ),
-                this.state.isViewCard ? _react2.default.createElement(_CardItemElement2.default, { isDisabled: !this.state.isEditMode, currentItem: this.state.selectedItemCard }) : null
-            );
-        }
-    }]);
-
-    return ItemsList;
+  return ItemsList;
 }(_react.Component);
 
 exports.default = ItemsList;
@@ -21176,7 +21220,7 @@ var ItemElement = function (_Component) {
     };
 
     _this.editMode = function () {
-      _this.props.isEditMode();
+      _this.props.isEditMode(true);
       console.log('now edit mode');
     };
 
@@ -21282,6 +21326,35 @@ var CardItemElement = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (CardItemElement.__proto__ || Object.getPrototypeOf(CardItemElement)).call(this, props));
 
+    _this.nameChange = function (e) {
+      console.log(e.target.value);
+      _this.setState({
+        itemName: e.target.value
+      });
+    };
+
+    _this.priceChange = function (e) {
+      console.log(e.target.value);
+      _this.setState({
+        price: parseInt(e.target.value)
+      });
+    };
+
+    _this.countChange = function (e) {
+      console.log(e.target.value);
+      _this.setState({
+        count: parseInt(e.target.value)
+      });
+    };
+
+    _this.saveParams = function () {
+      _this.props.saveChanges(_this.state);
+    };
+
+    _this.cancelEditMode = function () {
+      _this.props.isEditMode(false);
+    };
+
     _this.state = {
       itemName: _this.props.currentItem.itemName,
       price: _this.props.currentItem.price,
@@ -21326,26 +21399,40 @@ var CardItemElement = function (_Component) {
           name: 'itemNameCard',
           className: 'itemNameCard'
           // defaultValue={this.props.currentItem.itemName}
-          , value: this.state.itemName
-          // onChange={}
-          , disabled: this.state.isEditMode
+          , value: this.state.itemName,
+          onChange: this.nameChange,
+          disabled: this.state.isEditMode
         }),
         _react2.default.createElement('input', { type: 'text',
           name: 'itemPriceCard',
           className: 'itemPriceCard'
           // defaultValue={this.props.currentItem.price}
-          , value: this.state.price
-          // onChange={}
-          , disabled: this.state.isEditMode
+          , value: this.state.price,
+          onChange: this.priceChange,
+          disabled: this.state.isEditMode
         }),
         _react2.default.createElement('input', { type: 'text',
           name: 'itemCountCard',
           className: 'itemCountCard'
           // defaultValue={this.props.currentItem.count}
-          , value: this.state.count
-          // onChange={}
-          , disabled: this.state.isEditMode
-        })
+          , value: this.state.count,
+          onChange: this.countChange,
+          disabled: this.state.isEditMode
+        }),
+        !this.state.isEditMode ? _react2.default.createElement(
+          'div',
+          { className: 'buttons-container' },
+          _react2.default.createElement(
+            'button',
+            { className: 'button save-button', onClick: this.saveParams },
+            'Save'
+          ),
+          _react2.default.createElement(
+            'button',
+            { className: 'button cancel-button', onClick: this.cancelEditMode },
+            'Cancel'
+          )
+        ) : null
       );
     }
   }]);

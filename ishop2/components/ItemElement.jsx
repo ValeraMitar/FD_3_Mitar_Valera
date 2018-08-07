@@ -16,7 +16,7 @@ class ItemElement extends Component {
   };
 
   editMode = () => {
-    this.props.isEditMode();
+    this.props.isEditMode(true);
     console.log('now edit mode');
   };
 
